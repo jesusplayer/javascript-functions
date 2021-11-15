@@ -58,21 +58,20 @@ const corners = (state = []) => {
 
 const printCells = (state) => {
   let rec = corners(state);
-  let x = rec.topRight[0] - rec.bottomLeft[0] + 1;
-  const offSetX = rec.bottomLeft[0];
-  const offSetY = rec.bottomLeft[1];
-  let y = rec.topRight[1] - rec.bottomLeft[1] + 1;
   let res = [];
-  for (let i = 0; i < x; i++) {
+  const xMin = rec.bottomLeft[0];
+  const xMax = rec.topRight[0];
+  const yMin = rec.bottomLeft[1];
+  const yMax = rec.topRight[1];
+  for (let j = yMax; yMin <= j; j--) {
     const line = []
-    for (let j = 0; j < y; j++) {
-      line.push(printCell([i + offSetX, j + offSetY], state));
+    for (let i = xMin; i <= xMax; i++) {
+      line.push(printCell([i, j], state));
     }
     if (line.length) {
       res.push(line.join(" "));
     }
   }
-  //console.warn(res)
   const rrr = res.join("\n") + (res.length === 1 ? "" : "\n")
   return rrr;
 };
@@ -142,7 +141,16 @@ const iterate = (state, iterations) => {
   return states;
 };
 
-const main = (pattern, iterations) => { };
+const main = (pattern, iterations) => {
+  const stat = startPatterns[pattern];
+  if (stat && stat.length) {
+    const states = iterate(startPatterns[pattern], iterations)
+    states.forEach(s => {
+      const r = printCells(s);
+      console.log(r + "\n");
+    });
+  }
+};
 
 const startPatterns = {
   rpentomino: [
