@@ -101,11 +101,38 @@ const getLivingNeighbors = (cell, state) => {
   })
 };
 
-const willBeAlive = (cell, state) => { 
+const willBeAlive = (cell, state) => {
+  // the cell has three living neighbors, or,
+  // the cell is currently alive and has two living neighbors
+  const livNeig = getLivingNeighbors(cell, state);
+  if (livNeig.length === 3) {
+    return true;
+  }
+  if (contains.call(state, cell) && livNeig.length === 2) {
+    return true;
+  }
 
+  return false;
 };
 
-const calculateNext = (statecls) => { };
+const calculateNext = (statecls) => {
+  let rec = corners(statecls);
+  let x = rec.topRight[0] - rec.bottomLeft[0] + 1;
+  const offSetX = rec.bottomLeft[0];
+  const offSetY = rec.bottomLeft[1];
+  let y = rec.topRight[1] - rec.bottomLeft[1] + 1;
+  let res = [];
+  
+  for (let i = rec.bottomLeft[0]-1; i <= rec.topRight[0]+1; i++) {
+    for (let j = rec.bottomLeft[1]-1; j <= rec.topRight[1]+1; j++) {
+      const cell = [i , j];
+      if (willBeAlive(cell, statecls)) {
+        res.push(cell);
+      };
+    }
+  }
+  return res;
+};
 
 const iterate = (state, iterations) => { };
 
