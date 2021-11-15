@@ -55,7 +55,7 @@ const corners = (state = []) => {
 
   return { topRight: [maxX, maxY], bottomLeft: [minX, minY] }
 };
-
+ 
 const printCells = (state) => {
   let rec = corners(state);
   let res = [];
