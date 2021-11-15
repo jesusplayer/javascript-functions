@@ -117,15 +117,10 @@ const willBeAlive = (cell, state) => {
 
 const calculateNext = (statecls) => {
   let rec = corners(statecls);
-  let x = rec.topRight[0] - rec.bottomLeft[0] + 1;
-  const offSetX = rec.bottomLeft[0];
-  const offSetY = rec.bottomLeft[1];
-  let y = rec.topRight[1] - rec.bottomLeft[1] + 1;
   let res = [];
-  
-  for (let i = rec.bottomLeft[0]-1; i <= rec.topRight[0]+1; i++) {
-    for (let j = rec.bottomLeft[1]-1; j <= rec.topRight[1]+1; j++) {
-      const cell = [i , j];
+  for (let i = rec.bottomLeft[0] - 1; i <= rec.topRight[0] + 1; i++) {
+    for (let j = rec.bottomLeft[1] - 1; j <= rec.topRight[1] + 1; j++) {
+      const cell = [i, j];
       if (willBeAlive(cell, statecls)) {
         res.push(cell);
       };
@@ -134,7 +129,18 @@ const calculateNext = (statecls) => {
   return res;
 };
 
-const iterate = (state, iterations) => { };
+const iterate = (state, iterations) => {
+  let i = 0;
+  const states = [];
+  states.push(state);
+  let newState = Array.from(state);
+  while (iterations > i) {
+    newState = calculateNext(newState);
+    states.push(Array.from(newState));
+    i++;
+  }
+  return states;
+};
 
 const main = (pattern, iterations) => { };
 
